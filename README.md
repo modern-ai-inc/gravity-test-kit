@@ -28,7 +28,7 @@ An AI assistant can write a correct query and still give the wrong figure. Most 
    python3 score.py answer_key.csv ai_answers.csv
    ```
 
-   It prints how many figures were right, wrong, or missing, and writes `results.csv`. It never overwrites one: a later run writes `results-2.csv`, and so on. A figure in another currency than the right answer counts as wrong.
+   It prints how many figures were right, wrong, or missing, and writes `results.csv`. It never overwrites one: a later run writes `results-2.csv`, and so on. A figure written with a different currency sign ($, £ or €) from the right answer counts as wrong. Write figures with a sign or with none, not with a currency code such as EUR: a code is not read as a figure.
 
 5. **Find the causes.** For each wrong figure, write in the `cause` column why it went wrong: `definition`, `time window`, `double counted`, `filter`, `missing data` or `other`. The `definition` column in your answer key usually shows it.
 
