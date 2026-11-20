@@ -32,8 +32,8 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(p("Up"), "up")
 
     def test_not_a_single_figure(self):
-        for t in ("", "about 12", "12 people", "1,23", "(5", "--5", "12-15"):
-            self.assertIsNone(score.parse_figure(t), t)
+        for t in ("", "about 12", "12 people", "1,23", "(5", "--5", "12-15", "1,190 2", "12 15"):
+            self.assertIsNone(score.parse_figure(t), t)  # two figures are never merged into one
 
 
 class ScoreTest(unittest.TestCase):
@@ -59,6 +59,23 @@ class ScoreTest(unittest.TestCase):
         self.assertIn("Wrong:     1", out)
         self.assertIn("Ignored, not in the answer key: Q9", out)
         self.assertNotIn("%", out.split("Results")[0])  # counts, never percentages
+
+    def test_a_different_currency_is_wrong(self):
+        q = "Revenue in October 2026?"
+        _, _, v = self.run_score([["Q1", q, "$100", "0", "", ""], ["Q2", q, "$100", "0", "", ""]],
+                                 [["Q1", q, "€100", "", "", ""], ["Q2", q, "100", "", "", ""]])
+        self.assertEqual(v, {"Q1": "wrong", "Q2": "right"})
+
+    def test_never_overwrites_results(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            k, a = Path(tmp) / "k.csv", Path(tmp) / "a.csv"
+            write(k, KEY, [["Q1", "x", "1", "0", "", ""]])
+            write(a, ANS, [["Q1", "x", "2", "", "", ""]])
+            (Path(tmp) / "results.csv").write_text("my causes\n")
+            with redirect_stdout(io.StringIO()):
+                score.main([str(k), str(a)])
+            self.assertEqual((Path(tmp) / "results.csv").read_text(), "my causes\n")
+            self.assertTrue((Path(tmp) / "results-2.csv").exists())
 
     def test_question_words_must_match(self):
         with self.assertRaises(SystemExit):

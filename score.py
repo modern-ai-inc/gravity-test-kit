@@ -3,7 +3,8 @@
 
     python3 score.py answer_key.csv ai_answers.csv
 
-Writes results.csv next to ai_answers.csv and prints the counts. Standard library only.
+Writes results.csv next to ai_answers.csv (results-2.csv and so on if one exists; it never overwrites)
+and prints the counts. Standard library only.
 """
 import csv
 import re
@@ -14,23 +15,30 @@ from pathlib import Path
 CAUSES = ("definition", "time window", "double counted", "filter", "missing data", "other")
 WORDS = {"up", "down", "same"}
 # One figure: optional minus or brackets, optional currency sign, digits with commas, optional % or k/m/b.
-_NUM = re.compile(r"^(\()?(-)?[$£€]?(-)?(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?|\.\d+)(%|k|m|b)?(\))?$")
+_NUM = re.compile(r"^(\()?(-)?([$£€])?(-)?(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?|\.\d+)(%|k|m|b)?(\))?$")
 _SCALE = {"%": Decimal("0.01"), "k": Decimal(1000), "m": Decimal(1000000), "b": Decimal(1000000000)}
+
+
+def currency(text):
+    """The currency sign written with a figure, or '' when none."""
+    m = _NUM.match((text or "").strip().lower())
+    return (m.group(3) or "") if m else ""
 
 
 def parse_figure(text):
     """Return a Decimal, one of WORDS, or None when the cell holds no single figure.
-    A percent is stored as a fraction, so 38.5% and 0.385 are the same figure."""
-    s = (text or "").strip().lower().replace(" ", "")
+    A percent is stored as a fraction, so 38.5% and 0.385 are the same figure.
+    A space inside the cell means more than one figure, so it is not read as one."""
+    s = (text or "").strip().lower()
     if s in WORDS:
         return s
     m = _NUM.match(s)
-    if not m or bool(m.group(1)) != bool(m.group(6)) or (m.group(2) and m.group(3)):
+    if not m or bool(m.group(1)) != bool(m.group(7)) or (m.group(2) and m.group(4)):
         return None
-    value = Decimal(m.group(4).replace(",", ""))
-    if m.group(5):
-        value *= _SCALE[m.group(5)]
-    return -value if (m.group(1) or m.group(2) or m.group(3)) else value
+    value = Decimal(m.group(5).replace(",", ""))
+    if m.group(6):
+        value *= _SCALE[m.group(6)]
+    return -value if (m.group(1) or m.group(2) or m.group(4)) else value
 
 
 def matches(true, ai, tolerance):
@@ -70,7 +78,9 @@ def score(key_path, answers_path):
             if ai is None:
                 verdict = "no figure"
             else:
-                verdict = "right" if matches(true, ai, tol) else "wrong"
+                ck, ca = currency(k.get("right_figure")), currency(a.get("ai_figure"))
+                same_money = not (ck and ca) or ck == ca  # $100 and €100 are different figures
+                verdict = "right" if same_money and matches(true, ai, tol) else "wrong"
         results.append({"id": qid, "question": k.get("question", ""), "right_figure": k.get("right_figure", ""),
                         "ai_figure": (a or {}).get("ai_figure", ""), "verdict": verdict,
                         "definition": k.get("definition", ""), "cause": ""})
@@ -84,8 +94,17 @@ def main(argv=None):
         print(__doc__.strip())
         return 2
     results, extra = score(argv[0], argv[1])
-    out = Path(argv[1]).with_name("results.csv")
-    with open(out, "w", newline="", encoding="utf-8") as f:
+    folder = Path(argv[1]).parent
+    for n in range(1, 1000):  # never overwrite: an earlier results file may hold causes you wrote in it
+        out = folder / ("results.csv" if n == 1 else "results-%d.csv" % n)
+        try:
+            f = open(out, "x", newline="", encoding="utf-8")
+            break
+        except FileExistsError:
+            continue
+    else:
+        raise SystemExit("Too many results files in %s. Move some away and run again." % folder)
+    with f:
         w = csv.DictWriter(f, fieldnames=list(results[0]) if results else ["id"])
         w.writeheader()
         w.writerows(results)

@@ -2,7 +2,7 @@
 
 Ask your AI assistant twelve ordinary business questions about your own data, and count how many figures it gets wrong.
 
-It is meant to fit in one sitting and needs no IT work and no install beyond Python 3. Your data never leaves your company: you ask your own AI, on your own systems, and you score the answers on your own computer. Nothing in this kit sends anything anywhere.
+It is meant to fit in one sitting and needs no IT work and no install beyond Python 3. The kit itself sends nothing anywhere. You ask the AI you already use, under your company's own rules for it, and you score the answers on your own computer.
 
 ## Why the figures go wrong
 
@@ -28,7 +28,7 @@ An AI assistant can write a correct query and still give the wrong figure. Most 
    python3 score.py answer_key.csv ai_answers.csv
    ```
 
-   It prints how many figures were right, wrong, or missing, and writes `results.csv`.
+   It prints how many figures were right, wrong, or missing, and writes `results.csv`. It never overwrites one: a later run writes `results-2.csv`, and so on. A figure in another currency than the right answer counts as wrong.
 
 5. **Find the causes.** For each wrong figure, write in the `cause` column why it went wrong: `definition`, `time window`, `double counted`, `filter`, `missing data` or `other`. The `definition` column in your answer key usually shows it.
 
@@ -48,7 +48,7 @@ python3 score.py example/answer_key.csv example/ai_answers.csv
 
 ## What the kit does not do
 
-It does not connect to your data, call any AI, or send results anywhere. It does not fix the wrong figures: it shows where they are and why.
+It does not connect to your data, call any AI, or send results anywhere. It does not find the causes for you or fix the wrong figures: it shows which figures are wrong, and you find why, using the definitions in your answer key.
 
 ## About
 
