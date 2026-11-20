@@ -42,7 +42,7 @@ For each question, a person who knows your numbers writes the right figure into 
 
 Also write, in a few words, the definition you used (`definition` column). It turns a wrong figure into a fix.
 
-Q09 has one figure per {group} plus a total. Give it one row per figure, with ids `Q09-<group>` and `Q09-total`. Q10 has two figures: the direction (`up` or `down`) as `Q10-direction` and the change as `Q10-change`.
+Q09 has one figure per {group} plus a total. Give it one row per figure, with ids `Q09-<group>` and `Q09-total`. Q10 has two figures: the direction (`up` or `down`) as `Q10-direction` and the change as `Q10-change`. Use the same ids in `ai_answers.csv`, one row for each figure the AI gave.
 
 ## If a question does not fit
 

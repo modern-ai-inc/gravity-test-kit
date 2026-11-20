@@ -20,7 +20,7 @@ An AI assistant can write a correct query and still give the wrong figure. Most 
 
 2. **Write the right answers first.** The person who knows the figures fills in `answer_key.csv`: the `right_figure`, the `definition` used, and the `source`. Keep this file away from whoever asks the AI, so the test stays blind. `tolerance` is how far off a figure may be and still count as right, in the same units (for example `0`, `$100` or `0.1%`).
 
-3. **Ask the AI.** In a fresh conversation, ask each question exactly as written, one at a time, and give no hints. Ask on the same day the right answers were written, because "last quarter" and "so far this month" depend on the date. In `ai_answers.csv`, write the one figure the AI gave in `ai_figure` as a plain figure (`1,190`, `$18,400`, `2.4%`, or `up`/`down`). If it gave no single figure, leave `ai_figure` empty. Paste its whole reply into `full_answer` if you want a record.
+3. **Ask the AI.** In a fresh conversation, ask each question exactly as written, one at a time, and give no hints. Ask on the same day the right answers were written, because "last quarter" and "so far this month" depend on the date. In `ai_answers.csv`, write the one figure the AI gave in `ai_figure` as a plain figure (`1,190`, `$18,400`, `2.4%`, or `up`/`down`). Q09 and Q10 ask for several figures in one reply: write each figure the AI gave in its own row, with the same ids as in the answer key (`Q09-<group>`, `Q09-total`, `Q10-direction`, `Q10-change`). For any row where the AI gave no figure, leave `ai_figure` empty. Paste its whole reply into `full_answer` if you want a record.
 
 4. **Score.**
 
