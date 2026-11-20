@@ -1,0 +1,10 @@
+Gravity test kit
+Copyright (c) 2026 Modern AI Inc.
+
+This repository is licensed under the MIT License. See LICENSE.
+
+The MIT License covers the code and the question set. It gives no right to use
+Modern AI names or logos. See TRADEMARKS.md.
+
+Third-party components keep their own licenses:
+None. score.py uses only the Python standard library.

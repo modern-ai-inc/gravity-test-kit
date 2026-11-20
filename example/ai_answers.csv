@@ -1,0 +1,7 @@
+id,question,ai_figure,ai,asked_on,full_answer
+Q01,How many active customers did we have at the end of October 2026?,530,Example AI,2026-11-20,
+Q02,How many employees did we start October 2026 with?,4,Example AI,2026-11-20,4 employees started in October.
+Q06,How many orders did we have in October 2026?,"1,190",Example AI,2026-11-20,
+Q07,What was our churn rate for customers in October 2026?,,Example AI,2026-11-20,It depends on how you define churn.
+Q10-direction,"Did revenue go up or down from September 2026 to October 2026, and by how much?",up,Example AI,2026-11-20,
+Q10-change,"Did revenue go up or down from September 2026 to October 2026, and by how much?","$21,050",Example AI,2026-11-20,

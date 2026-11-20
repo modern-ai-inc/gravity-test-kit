@@ -1,0 +1,7 @@
+id,question,right_figure,tolerance,definition,source
+Q01,How many active customers did we have at the end of October 2026?,412,0,bought in the last 90 days,CRM month-end report
+Q02,How many employees did we start October 2026 with?,58,0,headcount on 1 October,HR monthly report
+Q06,How many orders did we have in October 2026?,"1,190",0,excludes cancelled and test orders,finance close
+Q07,What was our churn rate for customers in October 2026?,2.4%,0.1%,lost in month / active at start of month,finance close
+Q10-direction,"Did revenue go up or down from September 2026 to October 2026, and by how much?",up,0,net revenue,finance close
+Q10-change,"Did revenue go up or down from September 2026 to October 2026, and by how much?","$18,400",$100,net revenue,finance close
