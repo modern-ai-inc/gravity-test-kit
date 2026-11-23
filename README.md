@@ -16,7 +16,7 @@ Do not take our word for it: check it. Below is everything the kit does, so you 
 
 - Text files: this README, `QUESTIONS.md`, and the license and policy files.
 - Two blank spreadsheets (`answer_key.csv`, `ai_answers.csv`) and a filled-in example in `example/` for a made-up company.
-- `score.py`: one Python script, 136 lines, that uses only Python's standard library (`csv`, `re`, `sys`, `decimal`, `pathlib`). Its tests are in `tests/`.
+- `score.py`: one Python script, 140 lines, that uses only Python's standard library (`csv`, `re`, `sys`, `decimal`, `pathlib`). Its tests are in `tests/`.
 
 **What `score.py` touches**
 
@@ -32,7 +32,7 @@ Do not take our word for it: check it. Below is everything the kit does, so you 
 
 **Keep your filled-in files private**
 
-Your answer key and results hold real business figures (revenue, churn, headcount). Keep the filled-in files on your company's own storage. Do not paste the answer key into a chat with the AI, and do not commit the filled-in files to any repository. `.gitignore` already leaves out every `results*.csv` file.
+Your answer key and results hold real business figures (revenue, churn, headcount). Before you fill anything in, copy `answer_key.csv` and `ai_answers.csv` to a private folder on your company's own storage and work there, not inside the downloaded repository (those two files are tracked by git, so a later commit could carry your figures). `score.py` writes its results next to `ai_answers.csv`, so they stay in that folder too. Do not paste the answer key into a chat with the AI, and do not commit the filled-in files to any repository. `.gitignore` already leaves out every `results*.csv` file.
 
 **How much of your AI usage a run takes**
 
@@ -50,7 +50,7 @@ The only cost is the questions you ask your own AI assistant:
 | Paid per use, a leading model | About $0.15 to $1 | About $0.60 to $2.50 | About $2 to $7 |
 | Paid per use, a lower-cost model | Under $0.25 | About $0.30 to $0.70 | About $1 to $2 |
 
-These are estimates from our own tests on a small sample database, not a quote. Each question costs more when your AI reads a large table list or large query results, so on a big database a run can cost two to five times more. If your AI runs live queries on a data warehouse that bills per query (for example Snowflake or BigQuery), each question also costs a little warehouse time; ask the person who owns the warehouse if you are unsure. To keep it low: start with the quick version, ask each question once, and use a flat-plan assistant for a first try.
+These are estimates from our own tests on a small sample database, not a quote. On a flat plan the questions still count toward your plan's normal usage limits, the same as any twelve questions you would ask it. Each question costs more when your AI reads a large table list or large query results, so on a big database a run can cost two to five times more. If your AI runs live queries on a data warehouse that bills per query (for example Snowflake or BigQuery), each question also costs a little warehouse time; ask the person who owns the warehouse if you are unsure. To keep it low: start with the quick version, ask each question once, and use a flat-plan assistant for a first try.
 
 ## What you need
 
@@ -60,11 +60,11 @@ These are estimates from our own tests on a small sample database, not a quote. 
 
 ## The five steps
 
-1. **Fill in the blanks.** Open `QUESTIONS.md`. Replace each blank, such as `{customers}` and `{month}`, with your own words. Copy the filled-in questions into the `question` column of both `answer_key.csv` and `ai_answers.csv`, word for word.
+1. **Fill in the blanks.** Copy the two blank spreadsheets to a private folder first (see "Keep your filled-in files private" above). Open `QUESTIONS.md`. Replace each blank, such as `{customers}` and `{month}`, with your own words. Copy the filled-in questions into the `question` column of both `answer_key.csv` and `ai_answers.csv`, word for word.
 
-2. **Write the right answers first.** The person who knows the figures fills in `answer_key.csv`: the `right_figure`, the `definition` used, and the `source`. Keep this file away from whoever asks the AI, so the test stays blind. `tolerance` is how far off a figure may be and still count as right, in the same units (for example `0`, `$100` or `0.1%`).
+2. **Write the right answers first.** The person who knows the figures fills in `answer_key.csv`: the `right_figure`, the `definition` used, and the `source`. Keep this file away from whoever asks the AI, so the test stays blind. `tolerance` is how far off a figure may be and still count as right, in the same units (for example `0`, `$100` or `0.1%`). For a percent answer, write the tolerance with a % sign (`0.1%`); `score.py` stops if you forget it. Rename the `Q09-<group>` row to one row per group (for example `Q09-West`), and delete the rows of any question you leave out, in both files.
 
-3. **Ask the AI.** In a fresh conversation, ask each question exactly as written, one at a time, and give no hints. Ask on the same day the right answers were written, because "last quarter" and "so far this month" depend on the date. In `ai_answers.csv`, write the one figure the AI gave in `ai_figure` as a plain figure (`1,190`, `$18,400`, `2.4%`, or `up`/`down`). Q09 and Q10 ask for several figures in one reply: write each figure the AI gave in its own row, with the same ids as in the answer key (`Q09-<group>`, `Q09-total`, `Q10-direction`, `Q10-change`). For any row where the AI gave no figure, leave `ai_figure` empty. Paste its whole reply into `full_answer` if you want a record.
+3. **Ask the AI.** In a fresh conversation, ask each question exactly as written, one at a time, and give no hints. Ask on the same day the right answers were written, because "last quarter" and "so far this month" depend on the date. In `ai_answers.csv`, write the one figure the AI gave in `ai_figure` as a plain figure (`1,190`, `$18,400`, `$1.2m`, `2.4%`, or `up`/`down`; write `$1.2m`, not `$1.2 million`). Q09 and Q10 ask for several figures in one reply: write each figure the AI gave in its own row, with the same ids as in the answer key (`Q09-<group>`, `Q09-total`, `Q10-direction`, `Q10-change`). For any row where the AI gave no figure, leave `ai_figure` empty. Paste its whole reply into `full_answer` if you want a record.
 
 4. **Score.**
 

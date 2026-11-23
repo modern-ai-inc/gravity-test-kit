@@ -76,6 +76,10 @@ def score(key_path, answers_path):
         tol = parse_figure(k.get("tolerance") or "0")
         if not isinstance(tol, Decimal) or tol < 0:
             raise SystemExit("%s: %s has a tolerance that is not a number of zero or more." % (key_path, qid))
+        if "%" in (k.get("right_figure") or "") and tol and "%" not in (k.get("tolerance") or ""):
+            # 0.1 next to 2.4% would mean ten percentage points and pass almost any answer
+            raise SystemExit("%s: %s is a percent, so write its tolerance with a %% sign, for example 0.1%%."
+                             % (key_path, qid))
         a = answers.get(qid)
         if a is None:
             verdict, ai = "not asked", None

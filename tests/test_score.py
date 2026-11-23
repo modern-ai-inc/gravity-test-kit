@@ -101,6 +101,12 @@ class ScoreTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             self.run_score([["Q1", "x", "1", "-1", "", ""]], [])
 
+    def test_percent_tolerance_needs_a_percent_sign(self):
+        with self.assertRaises(SystemExit):
+            self.run_score([["Q1", "x", "2.4%", "0.1", "", ""]], [])
+        code, _, v = self.run_score([["Q1", "x", "2.4%", "0.1%", "", ""]], [["Q1", "x", "2.45%", "", "", ""]])
+        self.assertEqual(v["Q1"], "right")
+
     def test_example_runs(self):
         with tempfile.TemporaryDirectory() as tmp:
             for n in ("answer_key.csv", "ai_answers.csv"):
