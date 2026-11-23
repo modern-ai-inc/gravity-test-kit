@@ -48,6 +48,14 @@ def matches(true, ai, tolerance):
     return abs(true - ai) <= tolerance
 
 
+def cell(text):
+    """Text for results.csv that a spreadsheet will show as text, never run as a formula."""
+    text = text or ""
+    if text[:1] in ("=", "+", "@", "\t", "\r") or (text[:1] == "-" and parse_figure(text) is None):
+        return "'" + text
+    return text
+
+
 def read(path):
     with open(path, newline="", encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
@@ -81,9 +89,9 @@ def score(key_path, answers_path):
                 ck, ca = currency(k.get("right_figure")), currency(a.get("ai_figure"))
                 same_money = not (ck and ca) or ck == ca  # $100 and €100 are different figures
                 verdict = "right" if same_money and matches(true, ai, tol) else "wrong"
-        results.append({"id": qid, "question": k.get("question", ""), "right_figure": k.get("right_figure", ""),
-                        "ai_figure": (a or {}).get("ai_figure", ""), "verdict": verdict,
-                        "definition": k.get("definition", ""), "cause": ""})
+        results.append({"id": qid, "question": cell(k.get("question")), "right_figure": cell(k.get("right_figure")),
+                        "ai_figure": cell((a or {}).get("ai_figure")), "verdict": verdict,
+                        "definition": cell(k.get("definition")), "cause": ""})
     extra = sorted(set(answers) - set(key))
     return results, extra
 

@@ -36,6 +36,16 @@ class ParseTest(unittest.TestCase):
             self.assertIsNone(score.parse_figure(t), t)  # two figures are never merged into one
 
 
+class CellTest(unittest.TestCase):
+    def test_formula_text_is_kept_as_text(self):
+        for text in ("=1+1", "+SUM(A1)", "@x", "-cmd"):
+            self.assertEqual(score.cell(text), "'" + text)
+
+    def test_figures_and_words_are_unchanged(self):
+        for text in ("-5", "-$100", "(1,190)", "2.4%", "up", "", "How many orders?"):
+            self.assertEqual(score.cell(text), text)
+
+
 class ScoreTest(unittest.TestCase):
     def run_score(self, key_rows, ans_rows):
         with tempfile.TemporaryDirectory() as tmp:

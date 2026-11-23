@@ -36,6 +36,20 @@ Write the filled-in questions into `answer_key.csv` (column `question`) and `ai_
 | Q11 | How many different {customers} bought from us in the last 12 months? | Each customer once, and which 12 months |
 | Q12 | What was our net {revenue} in {month}, after refunds and discounts? | What your finance team takes off to get to net |
 
+## The quick version
+
+Short on time, or want to try it at the lowest cost first? Use 3 to 5 of these five questions, each asked once:
+
+| id | Why it is in the quick version |
+|---|---|
+| Q01 | "Active" is defined differently at almost every company |
+| Q03 | Calendar quarter or fiscal quarter |
+| Q06 | Which orders do not count |
+| Q11 | Each customer once, over which 12 months |
+| Q12 | What comes off to get to net |
+
+Each gives one figure, so it is one row in each file. Leave the other questions out of both files. Everything else works the same way.
+
 ## The right answers
 
 For each question, a person who knows your numbers writes the right figure into `answer_key.csv` from the source your company already trusts: the finance close, the board pack, a signed-off report. Not from the AI, and not from a new query written for the test.
