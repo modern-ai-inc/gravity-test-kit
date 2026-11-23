@@ -93,7 +93,7 @@ def score(key_path, answers_path):
                 ck, ca = currency(k.get("right_figure")), currency(a.get("ai_figure"))
                 same_money = not (ck and ca) or ck == ca  # $100 and €100 are different figures
                 verdict = "right" if same_money and matches(true, ai, tol) else "wrong"
-        results.append({"id": qid, "question": cell(k.get("question")), "right_figure": cell(k.get("right_figure")),
+        results.append({"id": cell(qid), "question": cell(k.get("question")), "right_figure": cell(k.get("right_figure")),
                         "ai_figure": cell((a or {}).get("ai_figure")), "verdict": verdict,
                         "definition": cell(k.get("definition")), "cause": ""})
     extra = sorted(set(answers) - set(key))

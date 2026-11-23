@@ -28,7 +28,7 @@ Do not take our word for it: check it. Below is everything the kit does, so you 
 
 - It calls no AI. You ask your own AI assistant the questions yourself, the same way you already use it.
 - It sends nothing anywhere. Nothing goes to Modern AI or to anyone else. Your answer key and results stay on your computer.
-- It does not connect to your data. When you ask your AI a question about your data, your AI reads that data under your company's existing setup and rules for it. The kit adds no new access. Use an AI assistant your company already allows for this data.
+- It does not connect to your data. When you ask your AI a question about your data, your AI reads that data under your company's existing setup and rules for it. The kit adds no new access. Use an AI assistant your company already allows for this data, with read-only access to it, and do not connect a new tool just for this test. If your data warehouse lets you set a query or spending limit, set one.
 
 **Keep your filled-in files private**
 
@@ -62,7 +62,7 @@ These are estimates from our own tests on a small sample database, not a quote. 
 
 1. **Fill in the blanks.** Copy the two blank spreadsheets to a private folder first (see "Keep your filled-in files private" above). Open `QUESTIONS.md`. Replace each blank, such as `{customers}` and `{month}`, with your own words. Copy the filled-in questions into the `question` column of both `answer_key.csv` and `ai_answers.csv`, word for word.
 
-2. **Write the right answers first.** The person who knows the figures fills in `answer_key.csv`: the `right_figure`, the `definition` used, and the `source`. Keep this file away from whoever asks the AI, so the test stays blind. `tolerance` is how far off a figure may be and still count as right, in the same units (for example `0`, `$100` or `0.1%`). For a percent answer, write the tolerance with a % sign (`0.1%`); `score.py` stops if you forget it. Rename the `Q09-<group>` row to one row per group (for example `Q09-West`), and delete the rows of any question you leave out, in both files.
+2. **Write the right answers first.** The person who knows the figures fills in `answer_key.csv`: the `right_figure`, the `definition` used, and the `source`. Keep this file away from whoever asks the AI, so the test stays blind. `tolerance` is how far off a figure may be and still count as right, in the same units (for example `0`, `$100` or `0.1%`). Write every percent with a % sign: in the right figure, the tolerance and the AI's figure (`2.4%`, `0.1%`), never as a decimal such as `0.024`. `score.py` stops if a percent answer has a tolerance without a % sign. Rename the `Q09-<group>` row to one row per group (for example `Q09-West`), and delete the rows of any question you leave out, in both files.
 
 3. **Ask the AI.** In a fresh conversation, ask each question exactly as written, one at a time, and give no hints. Ask on the same day the right answers were written, because "last quarter" and "so far this month" depend on the date. In `ai_answers.csv`, write the one figure the AI gave in `ai_figure` as a plain figure (`1,190`, `$18,400`, `$1.2m`, `2.4%`, or `up`/`down`; write `$1.2m`, not `$1.2 million`). Q09 and Q10 ask for several figures in one reply: write each figure the AI gave in its own row, with the same ids as in the answer key (`Q09-<group>`, `Q09-total`, `Q10-direction`, `Q10-change`). For any row where the AI gave no figure, leave `ai_figure` empty. Paste its whole reply into `full_answer` if you want a record.
 
